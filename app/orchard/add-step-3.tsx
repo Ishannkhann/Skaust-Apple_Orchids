@@ -23,7 +23,13 @@ export default function AddStep3() {
 
   const BG = isDark ? "bg-slate-950" : "bg-lime-50";
 
-  // ✅ Step 1 style input base (CONSISTENCY FIX)
+  const CARD = isDark
+    ? "bg-slate-800 border-slate-700"
+    : "bg-white border-green-100";
+
+  const TEXT_PRIMARY = isDark ? "text-white" : "text-green-950";
+  const TEXT_SECONDARY = isDark ? "text-gray-400" : "text-green-700";
+
   const inputBase =
     "rounded-2xl px-5 py-5 text-lg border";
 
@@ -36,13 +42,16 @@ export default function AddStep3() {
   const [image, setImage] = useState("");
 
   const [modal, setModal] = useState(false);
+
   const [loaded, setLoaded] = useState(false);
 
   const options = [
     "Irrigated",
-    "Krewa",
     "Rainfed",
+    "Karewa",
     "Plains",
+    "Hilly",
+    "Terraced",
     "Others",
   ];
 
@@ -111,17 +120,21 @@ export default function AddStep3() {
 
   return (
     <SafeAreaView className={`flex-1 ${BG}`}>
-      <ScrollView className="px-6">
+      <ScrollView className="px-5">
 
-        <Text className={`text-3xl font-bold mt-10 ${isDark ? "text-white" : "text-green-950"}`}>
+        <Text className={`text-3xl font-bold mt-6 ${TEXT_PRIMARY}`}>
           Finish Setup
         </Text>
 
-        <Text className="text-gray-500 mt-1">Step 3 of 3</Text>
+        <Text className={`mt-2 text-base ${TEXT_SECONDARY}`}>
+          Step 3 of 3
+        </Text>
 
         {/* AREA */}
-        <View className="mt-8">
-          <Text className={`mb-2 text-base font-semibold ${isDark ? "text-white" : "text-green-950"}`}>
+        <View className="mt-6">
+          <Text
+            className={`mb-2 text-base font-semibold ${TEXT_PRIMARY}`}
+          >
             Area in Canals
           </Text>
 
@@ -129,7 +142,7 @@ export default function AddStep3() {
             value={area}
             onChangeText={setArea}
             keyboardType="numeric"
-            placeholder="Enter area"
+            placeholder="Enter orchard area"
             placeholderTextColor="#888"
             className={inputStyle}
             style={{ textAlignVertical: "center" }}
@@ -138,15 +151,21 @@ export default function AddStep3() {
 
         {/* LAND TYPE */}
         <View className="mt-6">
-          <Text className={`mb-2 text-base font-semibold ${isDark ? "text-white" : "text-green-950"}`}>
+          <Text
+            className={`mb-2 text-base font-semibold ${TEXT_PRIMARY}`}
+          >
             Land Type
           </Text>
 
           <TouchableOpacity
             onPress={() => setModal(true)}
-            className={inputStyle}
+            className={`px-5 py-5 rounded-2xl border ${CARD}`}
           >
-            <Text className={landType ? inputStyle : "text-gray-400"}>
+            <Text
+              className={
+                landType ? TEXT_PRIMARY : TEXT_SECONDARY
+              }
+            >
               {loaded ? landType || "Select Land Type" : "Loading..."}
             </Text>
           </TouchableOpacity>
@@ -155,13 +174,21 @@ export default function AddStep3() {
         {/* IMAGE */}
         <TouchableOpacity
           onPress={pickImage}
-          className="mt-8 h-64 rounded-3xl border bg-white dark:bg-slate-900 overflow-hidden items-center justify-center"
+          className={`mt-8 h-64 rounded-3xl border overflow-hidden items-center justify-center ${CARD}`}
         >
           {image ? (
-            <Image source={{ uri: image }} className="w-full h-full" />
+            <Image
+              source={{ uri: image }}
+              className="w-full h-full"
+            />
           ) : (
             <>
-              <Ionicons name="camera-outline" size={42} color="#6B7280" />
+              <Ionicons
+                name="camera-outline"
+                size={42}
+                color="#6B7280"
+              />
+
               <Text className="text-gray-400 mt-3">
                 Tap to upload orchard image
               </Text>
@@ -172,9 +199,9 @@ export default function AddStep3() {
         {/* SAVE */}
         <TouchableOpacity
           onPress={save}
-          className="bg-green-600 py-5 rounded-2xl mt-10"
+          className="bg-green-600 py-5 rounded-2xl mt-10 mb-6"
         >
-          <Text className="text-white text-center font-semibold">
+          <Text className="text-white text-center font-semibold text-lg">
             Save Orchard
           </Text>
         </TouchableOpacity>
@@ -182,22 +209,34 @@ export default function AddStep3() {
       </ScrollView>
 
       {/* MODAL */}
-      <Modal isVisible={modal} onBackdropPress={() => setModal(false)}>
-        <View className={`${inputStyle} rounded-2xl p-4`}>
-          {options.map((o) => (
-            <TouchableOpacity
-              key={o}
-              onPress={() => {
-                setLandType(o);
-                setModal(false);
-              }}
-              className="py-4"
-            >
-              <Text className={isDark ? "text-white" : "text-green-950"}>
-                {o}
-              </Text>
-            </TouchableOpacity>
-          ))}
+      <Modal
+        isVisible={modal}
+        onBackdropPress={() => setModal(false)}
+        style={{ justifyContent: "center", margin: 20 }}
+      >
+        <View
+          className={`${CARD} rounded-2xl p-4 max-h-[70%]`}
+        >
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+          >
+            {options.map((o) => (
+              <TouchableOpacity
+                key={o}
+                onPress={() => {
+                  setLandType(o);
+                  setModal(false);
+                }}
+                className="py-4 border-b border-gray-200 dark:border-slate-700"
+              >
+                <Text
+                  className={`text-base ${TEXT_PRIMARY}`}
+                >
+                  {o}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
       </Modal>
     </SafeAreaView>

@@ -104,6 +104,10 @@ export default function AddStep2() {
     ? `${inputBase} bg-slate-800 text-white border-slate-700`
     : `${inputBase} bg-white text-green-950 border-green-100`;
 
+  const modalCard = isDark
+    ? "bg-slate-900 border border-slate-700"
+    : "bg-white border border-green-100";
+
   const Dropdown = (
     label: string,
     value: string,
@@ -137,24 +141,44 @@ export default function AddStep2() {
         <Text className={TEXT_SECONDARY}>Step 2 of 3</Text>
 
         {Dropdown("Apple Variety", variety, "variety", [
+          "Red Delicious",
+          "Royal Delicious",
+          "Rich-a-Red",
+          "Scarlet Spur",
+          "Red Chief",
           "Golden Delicious",
-          "Fuji",
           "Maharaji",
+          "American Trel",
+          "Ambri",
+          "Gala strains",
+          "Fuji",
+          "Honeycrisp",
+          "Granny Smith",
+          "Jonagold",
+          "Oregon Spur",
+          "Early Shanburry",
+          "Spartan",
+          "McIntosh",
+          "Others",
         ])}
 
         {Dropdown("Orchard Type", orchardType, "orchardType", [
           "Traditional Orchard",
           "Medium Density Orchard",
           "High Density Orchard",
+          "Ultra High Density Orchard",
         ])}
 
         {Dropdown("Soil Type", soilType, "soilType", [
           "Clayey",
           "Loamy",
           "Sandy",
-          "Clayey Loamy",
-          "Sandy Loamy",
-          "Silt",
+          "Clay Loam",
+          "Sandy Loam",
+          "Silty",
+          "Silty Loam",
+          "Gravelly",
+          "Organic Rich Soil",
         ])}
 
         {/* ✅ AGE INPUT MATCHED WITH STEP 1 STYLE */}
@@ -176,7 +200,7 @@ export default function AddStep2() {
 
         <TouchableOpacity
           onPress={next}
-          className="bg-green-600 py-5 rounded-2xl mt-10"
+          className="bg-green-600 py-5 rounded-2xl mt-10 mb-10"
         >
           <Text className="text-white text-center font-semibold">
             Continue
@@ -185,17 +209,43 @@ export default function AddStep2() {
 
       </ScrollView>
 
-      <Modal isVisible={modal} onBackdropPress={() => setModal(false)}>
-        <View className={`${CARD} rounded-2xl p-4`}>
-          {options.map((o) => (
-            <TouchableOpacity
-              key={o}
-              onPress={() => selectOption(o)}
-              className="py-4"
-            >
-              <Text className={TEXT_PRIMARY}>{o}</Text>
-            </TouchableOpacity>
-          ))}
+      {/* ✅ FIXED DROPDOWN MODAL LAYOUT */}
+      <Modal
+        isVisible={modal}
+        onBackdropPress={() => setModal(false)}
+        style={{ justifyContent: "center", margin: 20 }}
+      >
+        <View
+          className={`${modalCard} rounded-3xl overflow-hidden`}
+          style={{
+            maxHeight: "70%",
+          }}
+        >
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+          >
+            {options.map((o, index) => (
+              <TouchableOpacity
+                key={o}
+                onPress={() => selectOption(o)}
+                className={`py-4 px-5 ${
+                  index !== options.length - 1
+                    ? isDark
+                      ? "border-b border-slate-700"
+                      : "border-b border-green-100"
+                    : ""
+                }`}
+              >
+                <Text
+                  className={`text-base ${
+                    isDark ? "text-white" : "text-green-950"
+                  }`}
+                >
+                  {o}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
       </Modal>
     </SafeAreaView>
