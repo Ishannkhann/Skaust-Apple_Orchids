@@ -21,6 +21,15 @@ export default function Layout() {
         }}
       />
 
+      {/* MY ORCHARDS */}
+      <Stack.Screen
+        name="orchard/my-orchards"
+        options={{
+          headerShown: false,
+          animation: "slide_from_left",
+        }}
+      />
+
       {/* ORCHARD FLOW */}
       <Stack.Screen
         name="orchard/add-step-1"
